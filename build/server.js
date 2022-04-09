@@ -22,7 +22,10 @@ class Server {
         const MONGO_URI = 'mongodb://localhost/RestApiTsExpress';
         //mongoose.set('useFindAndModify', true);
         mongoose_1.default.connect(MONGO_URI)
-            .then(db => console.log("Db is connected"));
+            .then(db => console.log("Db is connected"))
+            .catch((error) => {
+            throw Error(`❌ Database Connection Error: ${error}`);
+        });
         //Settings
         this.app.set('port', process.env.PORT || 3000);
         //Middlewares

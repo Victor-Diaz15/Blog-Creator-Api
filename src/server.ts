@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import mongoose from 'mongoose';
+import mongoose, {ConnectOptions} from 'mongoose';
 import compression from 'compression';
 import cors from 'cors'
 
@@ -24,7 +24,10 @@ class Server{
         const MONGO_URI = 'mongodb://localhost/RestApiTsExpress';
         //mongoose.set('useFindAndModify', true);
         mongoose.connect(MONGO_URI)
-        .then(db => console.log("Db is connected"));
+        .then(db => console.log("Db is connected"))
+        .catch((error) => {
+            throw Error(`❌ Database Connection Error: ${error}`);
+          });
         //Settings
         this.app.set('port', process.env.PORT || 3000);
         //Middlewares
