@@ -1,5 +1,5 @@
 import Post from '../models/posts';
-import { IPosts } from '../interfaces/posts.interface';
+import { IPost } from '../interfaces/posts.interface';
 
 class PostsRepository{
     constructor(){}
@@ -8,30 +8,48 @@ class PostsRepository{
 
     //method to list all posts
     public async GetPosts(){
-        const posts = await Post.find();
-        return posts;
+        try {
+            const posts = await Post.find();
+            return posts;
+        } catch (error) {
+            throw error;
+        }
     }
     //method to list one only post
     public async GetPost(url: string){
-        const post = await Post.findOne({url: url});
-        return post;
+        try {
+            const post = await Post.findOne({url: url});
+            return post;
+        } catch (error) {
+            throw error;
+        }
     }
     //method to create new post
-    public async CreatePost(post: IPosts){
-        const {title, url, content, image} = post;
-        const newPost = new Post({title, url, content, image});
-        return await newPost.save();
+    public async CreatePost(post: IPost){
+        try {
+            const {title, url, content, image} = post;
+            const newPost = new Post({title, url, content, image});
+            return await newPost.save();
+        } catch (error) {
+            throw error;
+        }
     }
     //method to update a post is already created duh jajaja!!
-    public async UpdatePost(url: string, post: IPosts){
-        return await Post.findOneAndUpdate({url}, post);
+    public async UpdatePost(url: string, post: IPost){
+        try {
+            await Post.findOneAndUpdate({url}, post);
+        } catch (error) {
+            throw error;
+        }
     }
     //method to delete a post
     public async DeletePost(url: string){
-        await Post.findOneAndDelete({url: url});
-        return {success: true, message: "Post Deleted Successfully"};
+        try {
+            await Post.findOneAndDelete({url: url});
+        } catch (error) {
+            throw error;
+        }
     }
-
 }
 const postRepository = new PostsRepository();
 export default postRepository;

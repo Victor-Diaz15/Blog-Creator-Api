@@ -1,7 +1,9 @@
 import postsRepository from "../repositories/PostsRepo";
-import { IPosts } from "../interfaces/posts.interface";
-
+import { IPost } from "../interfaces/posts.interface";
+import PostDTO from "../dto/postDTO";
+import { domainToASCII } from "url";
 class PostsService{
+
     constructor(){};
 
     // Methods
@@ -13,9 +15,9 @@ class PostsService{
             if (!posts) {
                 return {success: false, message: "Posts Not Found"};
             }
-            return posts;
-        } catch (error: any) {
-            return {success: false, message: error.message};
+            return this.MapperDto(posts, {});
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -24,33 +26,30 @@ class PostsService{
         try {
             const post = await postsRepository.GetPost(url);
             if (!post) {
-                return {status: 404, message: "Posts Not Found"};
+                return {success: false, message: "Post Not Found"};
             }
-            return post;
-            
-        } catch (error: any) {
-            return {success: false, message: error.message};
+            return this.MapperDto([], post);
+        } catch (error) {
+            throw error;
         }
-        
     }
 
     //Method to add new post
-    public async AddPost(post: IPosts){
+    public async AddPost(post: IPost){
         try {
             const newPost = await postsRepository.CreatePost(post);
-            return newPost;
-        } catch (error: any) {
-            return {success: false, message: error.message};
+            return this.MapperDto([], newPost);
+        } catch (error) {
+            throw error;
         }
     }
 
     //Method to Update a post
-    public async UpdatePost(url: string, post: IPosts){
+    public async UpdatePost(url: string, post: IPost){
         try {
-            const updatePost = await postsRepository.UpdatePost(url, post);
-            return {Data: updatePost, Message: "Post Updated Successfully"}
-        } catch (error: any) {
-            return {success: false, message: error.message};
+            return await postsRepository.UpdatePost(url, post);
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -61,7 +60,35 @@ class PostsService{
         } catch (error: any) {
             return {success: false, message: error.message};
         }
-        
+    }
+    //Method mapper to fill the Dto
+    private MapperDto(arr: any[], item: any){
+        if (arr.length > 0) {
+            let postDto: Array<PostDTO> = [];
+            arr.map(post => {
+                let dto = new PostDTO();
+
+                dto.title = post.title;
+                dto.url = post.url;
+                dto.content = post.content;
+                dto.image = post.image;
+
+                postDto.push(dto);
+            });
+            return postDto;
+        }
+        else if(item){
+            let postDto: Array<PostDTO> = [];
+            let dto = new PostDTO();
+
+            dto.title = item.title;
+            dto.url = item.url;
+            dto.content = item.content;
+            dto.image = item.image;
+
+            postDto.push(dto);
+            return postDto;
+        }
     }
 }
 

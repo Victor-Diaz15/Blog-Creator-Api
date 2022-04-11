@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from 'http-status';
 import postService from "../services/post.service";
-import { IPosts } from "../interfaces/posts.interface";
+import { IPost } from "../interfaces/posts.interface";
 
 class PostController {
   constructor() {}
@@ -11,9 +11,14 @@ class PostController {
   //Method that return all Posts
   public async GetPosts(req: Request, res: Response) {
     try {
-        const Posts = await postService.GetPosts();
-        res.status(httpStatus.OK);
-        res.json(Posts);
+        const posts = await postService.GetPosts();
+        if (posts) {
+          res.status(httpStatus.OK);
+          res.json(posts);
+          return;
+        }
+        res.status(httpStatus.NOT_FOUND);
+        res.json(posts);
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -26,6 +31,11 @@ class PostController {
     try {
         const url = req.params.url;
         const Post = await postService.GetPost(url);
+        if (Post.success == false) {
+          res.status(httpStatus.NOT_FOUND);
+          res.json(Post);
+          return;
+        }
         res.status(httpStatus.OK);
         res.json(Post);
     } catch (error: any) {
@@ -38,7 +48,7 @@ class PostController {
   //Method that return the new Post Created
   public async AddPost(req: Request, res: Response) {
     try {
-        const newPost: IPosts = req.body;
+        const newPost: IPost = req.body;
         const result = await postService.AddPost(newPost);
         res.status(httpStatus.CREATED);
         res.json(result);
@@ -53,7 +63,7 @@ class PostController {
   public async UpdatePost(req: Request, res: Response) {
     try {
         const url = req.params.url;
-        const post: IPosts = req.body;
+        const post: IPost = req.body;
         const updatedPost = await postService.UpdatePost(url, post);
         res.status(httpStatus.OK);
         res.json(updatedPost);
