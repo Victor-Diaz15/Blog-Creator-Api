@@ -1,19 +1,28 @@
-import postsRepository from "../repositories/PostsRepo";
-import { IPost } from "../interfaces/posts.interface";
-import PostDTO from "../dto/postDTO";
-import { domainToASCII } from "url";
-class PostsService{
+import postsRepository from "../repositories/post.repository";
+import { IPost } from "../interfaces/post.interface";
+import PostDTO from "../dto/post.dto";
+class PostsService {
 
     constructor(){};
 
     // Methods
     
+    //method for check if a url exists
+    public async UrlExist(url: string){
+        const urlExist = await postsRepository.UrlExist(url);
+        if(urlExist){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     //Method that return all Posts
     public async GetPosts(){
         try {
             const posts = await postsRepository.GetPosts();
             if (!posts) {
-                return {success: false, message: "Posts Not Found"};
+                return false;
             }
             return this.MapperDto(posts, {});
         } catch (error) {
@@ -22,11 +31,11 @@ class PostsService{
     }
 
     //Method that return only one Post
-    public async GetPost(url:string){
+    public async GetPost(id: string){
         try {
-            const post = await postsRepository.GetPost(url);
+            const post = await postsRepository.GetPost(id);
             if (!post) {
-                return {success: false, message: "Post Not Found"};
+                return false;
             }
             return this.MapperDto([], post);
         } catch (error) {
@@ -45,20 +54,27 @@ class PostsService{
     }
 
     //Method to Update a post
-    public async UpdatePost(url: string, post: IPost){
+    public async UpdatePost(id: string, post: IPost){
         try {
-            return await postsRepository.UpdatePost(url, post);
+            const updatePost = await postsRepository.UpdatePost(id, post);
+            if (!updatePost) {
+                return false;
+            }
+            return true;
         } catch (error) {
             throw error;
         }
     }
-
     //Method to Delete a post
-    public async DeletePost(url: string){
+    public async DeletePost(id: string){
         try {
-            return await postsRepository.DeletePost(url);
-        } catch (error: any) {
-            return {success: false, message: error.message};
+            const deletedPost = await postsRepository.DeletePost(id);
+            if(!deletedPost){
+                return false;
+            }
+            return true;
+        } catch (error) {
+            throw error;
         }
     }
     //Method mapper to fill the Dto
@@ -68,6 +84,7 @@ class PostsService{
             arr.map(post => {
                 let dto = new PostDTO();
 
+                dto.id = post.id;
                 dto.title = post.title;
                 dto.url = post.url;
                 dto.content = post.content;
@@ -80,7 +97,8 @@ class PostsService{
         else if(item){
             let postDto: Array<PostDTO> = [];
             let dto = new PostDTO();
-
+            
+            dto.id = item.id;
             dto.title = item.title;
             dto.url = item.url;
             dto.content = item.content;

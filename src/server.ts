@@ -5,8 +5,9 @@ import mongoose, {ConnectOptions} from 'mongoose';
 import compression from 'compression';
 import cors from 'cors'
 
-import indexRouter from './routers/IndexRouter';
-import postRouter from './routers/PostRouter';
+import indexRouter from './routers/index.route';
+import postRouter from './routers/post.route';
+import userRouter from './routers/user.route';
 
 class Server{
 
@@ -41,7 +42,8 @@ class Server{
 
     routes(){
        this.app.use(indexRouter);
-       this.app.use('/api/posts', postRouter);
+       this.app.use('/api/post', postRouter);
+       this.app.use('/api', userRouter);
     }
 
     start(){

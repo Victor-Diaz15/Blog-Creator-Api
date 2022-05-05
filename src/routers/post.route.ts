@@ -1,5 +1,4 @@
 import {Router} from 'express';
-
 import postController from '../controllers/post.controller';
 
 class PostRouter{
@@ -13,10 +12,10 @@ class PostRouter{
     
     Routes(){
         this.router.get('/', postController.GetPosts);
-        this.router.get('/:url', postController.GetPost);
+        this.router.get('/:id', postController.GetPost);
         this.router.post('/', postController.AddPost);
-        this.router.put('/:url', postController.UpdatePost);
-        this.router.delete('/:url', postController.DeletePost);
+        this.router.put('/:id', postController.UpdatePost);
+        this.router.delete('/:id', postController.DeletePost);
 
     }
 }
