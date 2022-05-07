@@ -23,7 +23,10 @@ class UserRepository{
         }
     }
 
-    //method sign in for auth
+    public async SignIn(email: string, password: string){
+        const userExist = await this.UserExist(email);
+
+    }
 }
 
 const userRepository = new UserRepository();

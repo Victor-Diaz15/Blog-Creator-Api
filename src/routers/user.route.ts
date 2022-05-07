@@ -12,6 +12,7 @@ class UserRouter{
     
     Routes(){
         this.router.post('/signup', userController.SignUp);
+        this.router.post('/signin', userController.SignIn);
     }
 }
 const userRouter = new UserRouter();

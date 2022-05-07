@@ -1,3 +1,4 @@
+
 export interface IUser{
     first_name: string;
     last_name: string;
@@ -5,3 +6,9 @@ export interface IUser{
     password: string;
     posts: string[];
 }
+
+export interface IUserAuth{
+    email: string;
+    password: string;
+}
+

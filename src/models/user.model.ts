@@ -1,8 +1,9 @@
-import {model, Document, Schema} from 'mongoose';
+import {model, Schema} from 'mongoose';
 import {IUser} from '../interfaces/user.interface';
 import bcrypt from 'bcrypt';
 
-const userSchema = new Schema({
+
+export const userSchema = new Schema({
     first_name: {type: String, required: true},
     last_name: {type: String, required: true},
     email: {type: String, required: true, unique: true, lowercase: true},
@@ -21,9 +22,5 @@ userSchema.pre('save', async function (next){
     this.password = hash;
     next();
 });
-
-userSchema.methods.ComparePassword = async function (password: string){
-    return await bcrypt.compare(password, this.password);
-}
 
 export default model<IUser>('User', userSchema);
