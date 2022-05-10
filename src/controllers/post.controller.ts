@@ -22,7 +22,7 @@ class PostController {
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .send({success: false, message: error.message})
+        .send({success: false, message: error.message});
     }
   }
 
@@ -41,7 +41,7 @@ class PostController {
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .send({success: false, message: error.message})
+        .send({success: false, message: error.message});
     }
   }
 
@@ -66,7 +66,7 @@ class PostController {
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .send({success: false, message: error.message})
+        .send({success: false, message: error.message});
     }
   }
 
@@ -86,7 +86,7 @@ class PostController {
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .send({success: false, message: error.message})
+        .send({success: false, message: error.message});
     }
   }
 
@@ -105,7 +105,7 @@ class PostController {
     } catch (error: any) {
         res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .send({success: false, message: error.message})
+        .send({success: false, message: error.message});
     }
   }
 }

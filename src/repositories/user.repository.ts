@@ -1,10 +1,11 @@
 import User from '../models/user.model';
 import { IUser } from '../interfaces/user.interface';
+import { ObjectId } from "mongodb";
 
 class UserRepository{
     construtor(){}
     
-    //method
+    //method to check if user exist
     public async UserExist(email: string){
         try {
             return await User.findOne({email: email});
@@ -23,9 +24,22 @@ class UserRepository{
         }
     }
 
-    public async SignIn(email: string, password: string){
-        const userExist = await this.UserExist(email);
-
+    //method to get all user
+    public async GetUsers(){
+        try {
+            const users = await User.find();
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+    //method to delete user by id
+    public async DeleteUser(id: string){
+        try {
+            return await User.findOneAndDelete({_id: new ObjectId(id)});
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

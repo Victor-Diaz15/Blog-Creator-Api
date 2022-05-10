@@ -8,7 +8,7 @@ class IndexRouter{
     }
 
     routes(){
-        this.router.get('/', (req, res) => res.send("api/post o api/user"))
+        this.router.get('/', (req, res) => res.send("api/post, api/user, api/user/signup o api/user/signin"))
     }
 }
 const indexRouter = new IndexRouter();
