@@ -29,7 +29,7 @@ class PostsRepository {
   //method to list one only post
   public async GetPost(id: string) {
     try {
-      const post = await Post.findOne({ _id: new ObjectId(id) });
+      const post = await Post.findOne({ _id: new ObjectId(id) }, {createAt: 0});
       return post;
     } catch (error) {
       throw error;

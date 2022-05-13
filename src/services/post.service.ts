@@ -1,6 +1,6 @@
 import postsRepository from "../repositories/post.repository";
 import { IPost } from "../interfaces/post.interface";
-import PostDTO from "../dto/post.dto";
+import Post from "../models/post.model";
 class PostsService {
 
     constructor(){};
@@ -80,32 +80,28 @@ class PostsService {
     //Method mapper to fill the Dto
     private MapperDto(arr: any[], item: any){
         if (arr.length > 0) {
-            let postDto: Array<PostDTO> = [];
+            let postDto: Array<IPost> = [];
             arr.map(post => {
-                let dto = new PostDTO();
-
-                dto.id = post.id;
-                dto.title = post.title;
-                dto.url = post.url;
-                dto.content = post.content;
-                dto.image = post.image;
-
+                let dto: IPost = {
+                    id: post.id,
+                    title: post.title,
+                    url: post.url,
+                    content: post.content,
+                    image: post.image
+                }
                 postDto.push(dto);
             });
             return postDto;
         }
         else if(item){
-            let postDto: Array<PostDTO> = [];
-            let dto = new PostDTO();
-            
-            dto.id = item.id;
-            dto.title = item.title;
-            dto.url = item.url;
-            dto.content = item.content;
-            dto.image = item.image;
-
-            postDto.push(dto);
-            return postDto;
+            const dto: IPost = {
+                id: item.id,
+                title: item.title,
+                url: item.url,
+                content: item.content,
+                image: item.image
+            };
+            return dto;
         }
     }
 }

@@ -55,24 +55,6 @@ class UserController{
             .send({success: false, message: error.message});
         }
     }
-    //Method that return a message of user deleted
-    public async DeleteUser(req: Request, res: Response) {
-        try {
-            const id = req.params.id;
-            const result = await userService.DeleteUser(id);
-            if(!result){
-              res.status(httpStatus.BAD_REQUEST);
-              res.json({message: "Something went wrong when trying to delete"});
-              return;
-            }
-            res.status(httpStatus.OK);
-            res.json(result);
-        } catch (error: any) {
-            res
-            .status(httpStatus.INTERNAL_SERVER_ERROR)
-            .send({success: false, message: error.message});
-        }
-    }
 
     //method signin
     public async SignIn(req: Request, res: Response){
@@ -89,12 +71,31 @@ class UserController{
                 }
                 return res
                 .status(httpStatus.OK)
-                .json({token: userAuth});
+                .header("auth-token", userAuth)
+                .json({msg: "Succesfully signed in"});
             }
             return res
             .status(httpStatus.BAD_REQUEST)
             .json({msg: "The user does not exist!"});
             
+        } catch (error: any) {
+            res
+            .status(httpStatus.INTERNAL_SERVER_ERROR)
+            .send({success: false, message: error.message});
+        }
+    }
+    //Method that return a message of user deleted
+    public async DeleteUser(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const result = await userService.DeleteUser(id);
+            if(!result){
+              res.status(httpStatus.BAD_REQUEST);
+              res.json({message: "Something went wrong when trying to delete"});
+              return;
+            }
+            res.status(httpStatus.OK);
+            res.json(result);
         } catch (error: any) {
             res
             .status(httpStatus.INTERNAL_SERVER_ERROR)
