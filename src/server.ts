@@ -3,7 +3,9 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import mongoose, {ConnectOptions} from 'mongoose';
 import compression from 'compression';
-import cors from 'cors'
+import cors from 'cors';
+import passport from "passport";
+import { ValidateToken } from './middlewares/passport';
 
 import indexRouter from './routers/index.route';
 import postRouter from './routers/post.route';
@@ -38,6 +40,8 @@ class Server{
         this.app.use(helmet());
         this.app.use(compression());
         this.app.use(cors());
+        this.app.use(passport.initialize());
+        passport.use(ValidateToken);
     }
 
     routes(){

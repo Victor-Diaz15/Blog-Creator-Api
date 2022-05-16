@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import postController from '../controllers/post.controller';
-
+import passport from 'passport';
 class PostRouter{
 
     router: Router;
@@ -13,9 +13,9 @@ class PostRouter{
     Routes(){
         this.router.get('/', postController.GetPosts);
         this.router.get('/:id', postController.GetPost);
-        this.router.post('/', postController.AddPost);
-        this.router.put('/:id', postController.UpdatePost);
-        this.router.delete('/:id', postController.DeletePost);
+        this.router.post('/', passport.authenticate("jwt", { session: false }), postController.AddPost);
+        this.router.put('/:id', passport.authenticate("jwt", { session: false }), postController.UpdatePost);
+        this.router.delete('/:id', passport.authenticate("jwt", { session: false }), postController.DeletePost);
 
     }
 }
